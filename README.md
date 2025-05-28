@@ -17,21 +17,25 @@ Você já ouviu falar da CEAP? A Cota para o Exercício da Atividade Parlamentar
 
 ## Requisitos Obrigatórios
 - Organizar os dados extraidos do arquivo em tabelas no banco de dados;
-- Listagem dos deputados do seu estado;
-- Mostrar o somatório dos seus gastos;
-- Listar as despesas, mostrando a data(`datEmissao`), estabelecimento(`txtFornecedor`), valor(`vlrLiquido`), e link para a nota(`urlDocumento`);
-- Destacar a maior despesa do candidato;
-- Usar o framework Rails;
-- Ter uma cobertura de código;
+- Implementar uma API RESTful contendo:
+    - Listagem dos deputados do seu estado;
+    - Mostrar o somatório dos seus gastos;
+    - Listar as despesas, mostrando a data(`datEmissao`), estabelecimento(`txtFornecedor`), valor(`vlrLiquido`), e link para a nota(`urlDocumento`);
+    - Destacar a maior despesa do candidato;
+- Usar o framework Rails com algum framework frontend;
+- Ter uma boa cobertura de código;
+- Possibilitar o upload do arquivo;
+- Evitar N + 1 nas queries;
 
 # Requisitos bônus
 Esses requisitos não são obrigatórios, mas serão levados em consideração como pontos extras no momento da avaliação.
 
-- Possibilitar o upload do arquivo;
 - Exibir gráficos para melhorar a visualização dos gastos;
 - Aplicação hospedada no Heroku, AWS ou similares;
-- Evitar N + 1 nas queries;
 - Organizar estrutura do projeto utilizando padrões de projetos;
+- Documentação técnica detalhada;
+- Documentação de API com exemplos;
+- Diagramas de arquitetura;
 
 # Critérios de avaliação
 
