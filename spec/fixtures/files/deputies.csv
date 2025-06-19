@@ -1,0 +1,3 @@
+txNomeParlamentar;ideCadastro;nuCarteiraParlamentar;cpf;sgUF;sgPartido;txtDescricao;txtFornecedor;txtCNPJCPF;datEmissao;vlrLiquido;urlDocumento
+Deputado Teste;1;123;00000000000;SP;ABC;Material de Escritório;Fornecedor Exemplo;12345678000199;2024-06-01;150.75;http://example.com/doc.pdf
+Deputado Teste 2;2;124;00000000001;SP;DEF;Serviços Gráficos;Outro Fornecedor;12345678000200;2024-06-10;300.50;http://example.com/doc2.pdf
