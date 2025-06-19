@@ -10,10 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_06_19_032358) do
+ActiveRecord::Schema.define(version: 2025_06_19_043515) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "costs", force: :cascade do |t|
+    t.string "txtDescricao"
+    t.string "txtFornecedor"
+    t.string "txtCNPJCPF"
+    t.datetime "datEmissao"
+    t.decimal "vlrLiquido"
+    t.string "urlDocumento"
+    t.bigint "deputy_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["deputy_id"], name: "index_costs_on_deputy_id"
+  end
 
   create_table "deputies", force: :cascade do |t|
     t.string "txNomeParlamentar"
@@ -26,4 +39,5 @@ ActiveRecord::Schema.define(version: 2025_06_19_032358) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "costs", "deputies"
 end
