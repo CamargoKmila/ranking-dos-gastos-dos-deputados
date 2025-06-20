@@ -2,8 +2,8 @@ module Api
   module V1
     class DeputiesController < ApplicationController
       def index
-        deputies = Deputy.all
-        render json: DeputySerializer.new(deputies).serializable_hash
+        deputies = Deputy.page(params[:page]).per(params[:per_page] || 10)
+        render json: DeputySerializer.new(deputies, meta: pagination_meta(deputies)).serializable_hash
       end
 
       def total_spending
@@ -29,6 +29,16 @@ module Api
         else
           render json: { error: 'No expenses found for this deputy' }, status: :not_found
         end
+      end
+
+      private
+
+      def pagination_meta(scope)
+        {
+          current_page: scope.current_page,
+          total_pages: scope.total_pages,
+          total_count: scope.total_count
+        }
       end
     end
   end

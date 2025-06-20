@@ -3,11 +3,21 @@ module Api
     class CostsController < ApplicationController
       def index
         deputy = Deputy.find(params[:deputy_id])
-        costs = deputy.costs
+        costs = deputy.costs.page(params[:page]).per(params[:per_page] || 10)
 
-        render json: CostSerializer.new(costs).serializable_hash
+        render json: CostSerializer.new(costs, meta: pagination_meta(costs)).serializable_hash
       rescue ActiveRecord::RecordNotFound
         render json: { error: 'Deputy not found' }, status: :not_found
+      end
+
+      private
+
+      def pagination_meta(scope)
+        {
+          current_page: scope.current_page,
+          total_pages: scope.total_pages,
+          total_count: scope.total_count
+        }
       end
     end
   end
