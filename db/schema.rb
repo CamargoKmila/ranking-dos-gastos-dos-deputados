@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_06_19_043515) do
+ActiveRecord::Schema.define(version: 2025_06_20_210809) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(version: 2025_06_19_043515) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["deputy_id"], name: "index_costs_on_deputy_id"
+    t.index ["txtDescricao", "txtFornecedor", "txtCNPJCPF", "datEmissao", "vlrLiquido", "urlDocumento", "deputy_id"], name: "index_unique_costs_per_fields", unique: true
   end
 
   create_table "deputies", force: :cascade do |t|
