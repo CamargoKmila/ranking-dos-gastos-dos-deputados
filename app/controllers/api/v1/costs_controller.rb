@@ -3,7 +3,7 @@ module Api
     class CostsController < ApplicationController
       def index
         deputy = Deputy.find(params[:deputy_id])
-        costs = deputy.costs.page(params[:page]).per(params[:per_page] || 10)
+        costs = deputy.costs.includes(:deputy).page(params[:page]).per(params[:per_page] || 10)
 
         render json: CostSerializer.new(costs, meta: pagination_meta(costs)).serializable_hash
       rescue ActiveRecord::RecordNotFound
