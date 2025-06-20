@@ -44,4 +44,40 @@ RSpec.describe 'Api::V1::Deputies', type: :request do
       expect(json['error']).to eq('Deputy not found')
     end
   end
+
+  describe 'GET /api/v1/deputies/:id/biggest_expense' do
+    let(:deputy) { create(:deputy) }
+  
+    before do
+      create(:cost, deputy: deputy, vlrLiquido: 100)
+      create(:cost, deputy: deputy, vlrLiquido: 300)
+      create(:cost, deputy: deputy, vlrLiquido: 200)
+    end
+  
+    it 'returns the biggest expense of the deputy' do
+      get "/api/v1/deputies/#{deputy.id}/biggest_expense"
+  
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+      expect(json.dig('data', 'attributes', 'vlrLiquido').to_f).to eq(300.0)
+    end
+  
+    it 'returns 404 if deputy not found' do
+      get "/api/v1/deputies/999999/biggest_expense"
+  
+      expect(response).to have_http_status(:not_found)
+      json = JSON.parse(response.body)
+      expect(json['error']).to eq('Deputy not found')
+    end
+  
+    it 'returns 404 if deputy has no expenses' do
+      new_deputy = create(:deputy)
+  
+      get "/api/v1/deputies/#{new_deputy.id}/biggest_expense"
+  
+      expect(response).to have_http_status(:not_found)
+      json = JSON.parse(response.body)
+      expect(json['error']).to eq('No expenses found for this deputy')
+    end
+  end  
 end
