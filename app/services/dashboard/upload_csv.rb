@@ -22,7 +22,7 @@ module Dashboard
     def call
       Rails.logger.info "Iniciando importação do CSV: #{csv.inspect}"
       validate_file!
-    
+
       ActiveRecord::Base.transaction do
         CSV.foreach(csv.path, headers: true, encoding: 'bom|utf-8', col_sep: ';') do |row|
           next unless filter_row?(row)
@@ -32,7 +32,7 @@ module Dashboard
           @imported_rows += 1
         end
       end
-    
+
       errors.empty?
     rescue ActiveRecord::RecordInvalid => e
       Rails.logger.error "Erro de ActiveRecord: #{e.message}"
