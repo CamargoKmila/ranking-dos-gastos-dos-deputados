@@ -41,6 +41,7 @@ group :development, :test do
   gem 'rubocop-rails', require: false
   gem 'rubocop-rspec', require: false
   gem 'rubocop-factory_bot'
+  gem 'bullet'
 end
 
 group :development do
