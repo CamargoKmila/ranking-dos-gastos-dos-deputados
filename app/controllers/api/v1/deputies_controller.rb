@@ -2,7 +2,7 @@ module Api
   module V1
     class DeputiesController < ApplicationController
       def index
-        deputies = Deputy.all
+        deputies = Deputy.page(params[:page]).per(params[:per_page] || 10)
         render json: DeputySerializer.new(deputies).serializable_hash
       end
 
