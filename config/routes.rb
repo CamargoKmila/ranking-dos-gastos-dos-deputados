@@ -8,4 +8,9 @@ Rails.application.routes.draw do
       end
     end
   end
+  
+  namespace :dashboard do
+    get 'upload', to: 'upload_csv#new'
+    post 'upload', to: 'upload_csv#create'
+  end  
 end

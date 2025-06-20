@@ -1,0 +1,18 @@
+<h1>Upload de CSV</h1>
+
+<%= form_with url: dashboard_upload_path, local: true, multipart: true do |form| %>
+  <div>
+    <%= form.label :file, "Selecione o arquivo CSV:" %>
+    <%= form.file_field :file %>
+  </div>
+
+  <div>
+    <%= form.submit "Upload" %>
+  </div>
+<% end %>
+
+<% if flash[:notice] %>
+  <p style="color: green;"><%= flash[:notice] %></p>
+<% elsif flash[:alert] %>
+  <p style="color: red;"><%= flash[:alert] %></p>
+<% end %>
