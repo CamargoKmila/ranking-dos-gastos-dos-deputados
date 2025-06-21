@@ -1,0 +1,12 @@
+<h1>Deputados de SP</h1>
+
+<ul>
+  <% @deputies.each do |deputy| %>
+    <li>
+      <strong><%= deputy.txNomeParlamentar %></strong> - 
+      Total de gastos: R$ <%= number_to_currency(deputy.costs.sum(&:vlrLiquido), unit: '', separator: ',', delimiter: '.') %>
+      |
+      <%= link_to 'Ver detalhes', dashboard_deputy_path(deputy) %>
+    </li>
+  <% end %>
+</ul>
