@@ -1,0 +1,4 @@
+txNomeParlamentar;ideCadastro;nuCarteiraParlamentar;cpf;sgUF;sgPartido;txtDescricao;txtFornecedor;txtCNPJCPF;datEmissao;vlrLiquido;urlDocumento
+Deputado Teste;12345;001;11111111111;SP;ABC;Descrição 1;Fornecedor X;;2024-01-01;100.00;
+Deputado Teste;12345;001;11111111111;SP;ABC;Descrição 2;Fornecedor Y;;2024-01-02;200.00;
+Deputado Teste;12345;001;11111111111;SP;ABC;Descrição 3;Fornecedor Z;;2024-01-03;300.00;

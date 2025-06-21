@@ -12,6 +12,7 @@ module Dashboard
       @csv = csv
       @imported_rows = 0
       @errors = []
+      @deputies_cache = {}
     end
 
     def self.call(csv)
@@ -19,22 +20,26 @@ module Dashboard
     end
 
     def call
+      Rails.logger.info "Iniciando importação do CSV: #{csv.inspect}"
       validate_file!
 
-      CSV.foreach(csv.path, headers: true, encoding: 'bom|utf-8', col_sep: ';') do |row|
-        next unless filter_row?(row)
-
-        ActiveRecord::Base.transaction do
-          deputy = find_or_create_deputy!(row)
+      ActiveRecord::Base.transaction do
+        CSV.foreach(csv.path, headers: true, encoding: 'bom|utf-8', col_sep: ';') do |row|
+          next unless filter_row?(row)
+        
+          deputy = find_or_create_cached_deputy!(row)
           create_cost!(row, deputy)
           @imported_rows += 1
         end
-      rescue ActiveRecord::RecordInvalid => e
-        @errors << { row: row.to_h, error: e.message }
       end
 
       errors.empty?
+    rescue ActiveRecord::RecordInvalid => e
+      Rails.logger.error "Erro de ActiveRecord: #{e.message}"
+      @errors << { error: e.message }
+      false
     rescue StandardError => e
+      Rails.logger.error "Erro de ActiveRecord: #{e.message}"
       @errors << { error: e.message }
       false
     end
@@ -54,8 +59,10 @@ module Dashboard
       row['sgUF'] == FILTER_UF
     end
 
-    def find_or_create_deputy!(row)
-      Deputy.find_or_create_by!(
+    def find_or_create_cached_deputy!(row)
+      key = "#{row['txNomeParlamentar']}_#{row['ideCadastro']}_#{row['cpf']}"
+    
+      @deputies_cache[key] ||= Deputy.find_or_create_by!(
         txNomeParlamentar: row['txNomeParlamentar'],
         ideCadastro: row['ideCadastro'],
         nuCarteiraParlamentar: row['nuCarteiraParlamentar'],
