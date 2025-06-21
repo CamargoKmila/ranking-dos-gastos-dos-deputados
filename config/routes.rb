@@ -12,5 +12,7 @@ Rails.application.routes.draw do
   namespace :dashboard do
     get 'upload', to: 'upload_csv#new'
     post 'upload', to: 'upload_csv#create'
+
+    resources :deputies, only: [:index, :show]
   end  
 end

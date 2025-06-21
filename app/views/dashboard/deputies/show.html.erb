@@ -1,0 +1,39 @@
+<h1><%= @deputy.txNomeParlamentar %></h1>
+
+<p><strong>Total de Gastos:</strong> R$ <%= number_to_currency(@total_spending, unit: '', separator: ',', delimiter: '.') %></p>
+
+<% if @biggest_expense %>
+  <p><strong>Maior despesa:</strong> R$ <%= number_to_currency(@biggest_expense.vlrLiquido, unit: '', separator: ',', delimiter: '.') %>
+  em <%= @biggest_expense.txtFornecedor %> na data <%= l(@biggest_expense.datEmissao.to_date) %>
+  (<%= link_to 'Ver nota', @biggest_expense.urlDocumento, target: "_blank" if @biggest_expense.urlDocumento.present? %>)</p>
+<% end %>
+
+<h2>Despesas</h2>
+<table border="1" cellpadding="5">
+  <thead>
+    <tr>
+      <th>Data</th>
+      <th>Fornecedor</th>
+      <th>Valor</th>
+      <th>Nota Fiscal</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @costs.each do |cost| %>
+      <tr>
+        <td><%= l(cost.datEmissao.to_date) if cost.datEmissao %></td>
+        <td><%= cost.txtFornecedor %></td>
+        <td>R$ <%= number_to_currency(cost.vlrLiquido, unit: '', separator: ',', delimiter: '.') %></td>
+        <td>
+          <% if cost.urlDocumento.present? %>
+            <%= link_to 'Ver nota', cost.urlDocumento, target: "_blank" %>
+          <% else %>
+            Não disponível
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<p><%= link_to 'Voltar para lista de deputados', dashboard_deputies_path %></p>
