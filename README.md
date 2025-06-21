@@ -1,51 +1,93 @@
-# Ranking dos gastos dos Deputados
+# Ranking dos Gastos dos Deputados
 
-Estamos muito felizes que você tenha chegado nessa etapa do nosso processo seletivo, para essa fase, desejamos que você resolva um desafio. Nosso desafio consiste em analisar alguns dados disponibilizados pelo Câmara dos Deputados relativos aos gastos dos parlamentares. A ideia é descobrir quem, do seu estado, está gastando mais e exibir de forma resumida esses principais gastos.
+Projeto desenvolvido em Ruby on Rails para importação, armazenamento e exibição dos gastos parlamentares de deputados federais, com foco inicial no estado de São Paulo (UF: SP).
 
-## Descrição do desafio
+---
 
-Você já ouviu falar da CEAP? A Cota para o Exercício da Atividade Parlamentar, custeia as despesas do mandato, como passagens aéreas e conta de celular. Algumas são reembolsadas, como as com os Correios, e outras são pagas por débito automático, como a compra de passagens. Nos casos de reembolso, os deputados têm três meses para apresentar os recibos. O valor mensal não utilizado fica acumulado ao longo do ano. Por esse motivo, em alguns meses o valor gasto pode ser maior que a média mensal. (Fonte: [Portal da Câmara dos Deputados](https://www2.camara.leg.br/comunicacao/assessoria-de-imprensa/guia-para-jornalistas/cota-parlamentar)). Através do portal da transparência, nós temos acesso a essas despesas e podemos saber como e onde os políticos estão gastando.
+## ✨ Funcionalidades principais
 
-## Base de dados e explicações complementares
+- Importação de dados via upload de arquivos CSV.
+- Filtro automático para importar apenas deputados da UF **SP**.
+- Prevenção de duplicidade de registros de deputados e gastos.
+- Cadastro de gastos vinculados aos deputados.
+- Exibição dos dados para acompanhamento e análise.
 
-- [Fonte de dados (pegar o referente ao ano 2024 em formato CSV)](https://dadosabertos.camara.leg.br/swagger/api.html#staticfile)
-- [Explicação dos campos do arquivo CSV](https://dadosabertos.camara.leg.br/howtouse/2023-12-26-dados-ceap.html)
-- Ignorar linhas que não tenham no campo `sgUF` o estado que você mora. O objetivo do trabalho é focar apenas no seu estado;
-- Considerar para fins de cálculos de despesa, o campo `vlrLiquido`. Esse é o valor que de fato foi debitado da cota do candidato;
-- Dica para pegar a foto do político: **http://www.camara.leg.br/internet/deputado/bandep/{ideCadastro}.jpg**
+---
 
+## 📂 Tecnologias utilizadas
 
-## Requisitos Obrigatórios
-- Organizar os dados extraidos do arquivo em tabelas no banco de dados;
-- Implementar uma API RESTful contendo:
-    - Listagem dos deputados do seu estado;
-    - Mostrar o somatório dos seus gastos;
-    - Listar as despesas, mostrando a data(`datEmissao`), estabelecimento(`txtFornecedor`), valor(`vlrLiquido`), e link para a nota(`urlDocumento`);
-    - Destacar a maior despesa do candidato;
-- Usar o framework Rails com algum framework frontend;
-- Ter uma boa cobertura de código;
-- Possibilitar o upload do arquivo;
-- Evitar N + 1 nas queries;
+- **Ruby** 3.0.4
+- **Rails** 6.1.x
+- **PostgreSQL**
+- **RSpec** 
+- **Webpacker**
 
-# Requisitos bônus
-Esses requisitos não são obrigatórios, mas serão levados em consideração como pontos extras no momento da avaliação.
+---
 
-- Exibir gráficos para melhorar a visualização dos gastos;
-- Aplicação hospedada no Heroku, AWS ou similares;
-- Organizar estrutura do projeto utilizando padrões de projetos;
-- Documentação técnica detalhada;
-- Documentação de API com exemplos;
-- Diagramas de arquitetura;
+## ✅ Setup do projeto (Local)
 
-# Critérios de avaliação
+### Pré-requisitos:
 
-- Organização do projeto: Avalia a estrutura do projeto, documentação e uso de controle de versão;
-- Coerência: Avalia se os requisitos foram atendidos;
-- Boas práticas: Avalia se o projeto segue boas práticas de desenvolvimento, incluindo segurança e otimização;
-- Criatividade: Avalia o quanto você "pensou fora da caixa", levando em conta soluções criativas para os problemas levantados;
+- Ruby 3.0.4
+- PostgreSQL
+- Node.js e Yarn (para o Webpacker)
 
-O desafio deve ser entregue nos passando a URL de seu repositório. Fique a vontade caso queira incrementar o projeto com outras features não listadas aqui, iremos levar em consideração também!
+### Passos:
 
-Qualquer dúvida em relação ao desafio, responderemos por e-mail.
+#### Clone o repositório
+```bash
+git clone git@github.com:CamargoKmila/ranking-dos-gastos-dos-deputados.git
+```
 
-Bom trabalho!
+#### Instale as dependências Ruby
+```bash
+bundle install
+```
+
+#### Instale as dependências JS
+```bash
+yarn install --check-files
+```
+
+#### Crie e configure o banco de dados
+```bash
+rails db:create
+rails db:migrate
+```
+#### (Opcional) Popular com dados de exemplo
+```bash
+rails db:seed
+```
+
+### 🚀 Como rodar o servidor localmente:
+```bash
+rails s
+```
+#### Acesse no navegador:
+```http://localhost:3000```
+
+## 📝 Upload de CSV
+
+### Acesso via navegador:
+```http://localhost:3000/dashboard/upload```
+
+#### Upload de arquivo:
+Na tela de upload, selecione o arquivo CSV contendo os dados de deputados e seus respectivos gastos.
+
+#### 💡 Importante:
+O sistema atualmente só processa linhas com UF = SP.
+Arquivos fora do formato CSV são rejeitados.
+
+## ⚙️ Regras de validação na importação:
+- **Deputados** são identificados de forma única pelos campos:
+`txNomeParlamentar`, `ideCadastro`, `cpf`, `nuCarteiraParlamentar`, `sgUF`, `sgPartido`
+
+- **Gastos (Costs)** são identificados de forma única por:
+`txtDescricao`, `txtFornecedor`, `txtCNPJCPF`, `datEmissao`, `vlrLiquido`, `urlDocumento`, `deputy_id`
+
+- **Erros de validação (como datas inválidas ou registros duplicados) são tratados individualmente por linha e registrados na execução.
+
+## ✅ Como rodar os testes:
+```bash
+bundle exec rspec
+```
