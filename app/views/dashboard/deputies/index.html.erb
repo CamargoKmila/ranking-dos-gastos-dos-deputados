@@ -1,12 +1,26 @@
-<h1>Deputados de SP</h1>
+<h1 class="mb-4 text-center">Deputados de SP</h1>
 
-<ul>
+<%= form_with url: dashboard_deputies_path, method: :get, local: true, class: "mb-4" do %>
+  <div class="input-group">
+    <%= text_field_tag :search, params[:search], placeholder: "Buscar por nome, partido ou UF", class: "form-control" %>
+    <button type="submit" class="btn btn-outline-primary">Buscar</button>
+  </div>
+<% end %>
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
   <% @deputies.each do |deputy| %>
-    <li>
-      <strong><%= deputy.txNomeParlamentar %></strong> - 
-      Total de gastos: R$ <%= number_to_currency(deputy.costs.sum(&:vlrLiquido), unit: '', separator: ',', delimiter: '.') %>
-      |
-      <%= link_to 'Ver detalhes', dashboard_deputy_path(deputy) %>
-    </li>
+    <div class="col">
+      <div class="card h-100 text-center shadow-sm">
+        <img src="<%= deputy.photo_url %>" class="card-img-top mx-auto d-block" alt="Foto de <%= deputy.txNomeParlamentar %>" style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%; margin-top: 16px;">
+        <div class="card-body">
+          <h5 class="card-title"><%= deputy.txNomeParlamentar %></h5>
+          <p class="card-text">Total de gastos:</p>
+          <p><strong>R$ <%= number_to_currency(deputy.costs.sum(&:vlrLiquido), unit: '', separator: ',', delimiter: '.') %></strong></p>
+        </div>
+        <div class="card-footer bg-transparent border-0">
+          <%= link_to 'Ver detalhes', dashboard_deputy_path(deputy), class: "btn btn-primary btn-sm" %>
+        </div>
+      </div>
+    </div>
   <% end %>
-</ul>
+</div>

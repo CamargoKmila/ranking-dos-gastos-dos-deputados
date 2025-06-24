@@ -1,7 +1,12 @@
 module Dashboard
   class DeputiesController < ApplicationController
     def index
-      @deputies = Deputy.includes(:costs).all
+      if params[:search].present?
+        term = "%#{params[:search]}%"
+        @deputies = Deputy.includes(:costs).where("txNomeParlamentar ILIKE ? OR party ILIKE ? OR uf ILIKE ?", term, term, term)
+      else
+        @deputies = Deputy.includes(:costs).all
+      end
     end
 
     def show
