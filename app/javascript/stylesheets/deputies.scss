@@ -1,0 +1,21 @@
+.deputies-grid {
+  @extend .row;
+  gap: 1rem;
+}
+
+.deputy-card {
+  @extend .card;
+  @extend .h-100;
+  @extend .text-center;
+  @extend .shadow-sm;
+  padding: 1rem;
+
+  img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin: 0 auto 0.5rem auto;
+    display: block;
+  }
+}
