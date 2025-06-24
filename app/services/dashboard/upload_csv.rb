@@ -24,12 +24,18 @@ module Dashboard
       validate_file!
 
       ActiveRecord::Base.transaction do
-        CSV.foreach(csv.path, headers: true, encoding: 'bom|utf-8', col_sep: ';') do |row|
-          next unless filter_row?(row)
         
-          deputy = find_or_create_cached_deputy!(row)
-          create_cost!(row, deputy)
-          @imported_rows += 1
+        total_rows = 0
+
+        CSV.foreach(csv.path, headers: true, encoding: 'bom|utf-8', col_sep: ',') do |row|
+          total_rows += 1
+          begin
+            create_deputy_and_cost(row)
+          rescue ActiveRecord::RecordInvalid => e
+            next
+          rescue StandardError => e
+            next
+          end
         end
       end
 
@@ -88,6 +94,13 @@ module Dashboard
       return if date_string.blank?
 
       DateTime.parse(date_string) rescue nil
+    end
+
+    def create_deputy_and_cost(row)
+      return unless filter_row?(row)
+
+      deputy = find_or_create_cached_deputy!(row)
+      create_cost!(row, deputy)
     end
   end
 end
