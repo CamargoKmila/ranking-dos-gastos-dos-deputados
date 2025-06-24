@@ -8,7 +8,7 @@ module Dashboard
       result = Dashboard::UploadCsv.call(file)
 
       if result
-        redirect_to dashboard_upload_path, notice: 'Upload realizado com sucesso!'
+        redirect_to dashboard_deputies_path, notice: 'Upload realizado com sucesso!'
       else
         redirect_to dashboard_upload_path, alert: 'Erro no upload. Verifique o arquivo.'
       end
